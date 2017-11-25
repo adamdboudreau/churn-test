@@ -132,14 +132,28 @@ class PostsController < ApplicationController
 
   def get_scroll_history
     # "scroll_speed", "towards_address_bar", "churn", "sid"
-    puts "get scroll history: #{scroll_history_params.inspect}"
-    sh = ScrollHistory.create(scroll_history_params)
+    begin
+      if ScrollHistory.count > 3000
+        render json: {error: 'too much data to record'}
+      else
+        puts "get scroll history: #{scroll_history_params.inspect}"
+        sh = ScrollHistory.create(scroll_history_params)
 
-    render json: sh.attributes.to_json
+        render json: sh.attributes.to_json
+      end
+
+    rescue Exception => e
+      render json: {error: e.inspect}
+    end
   end
 
   def scroll_histories
-    @scroll_histories = ScrollHistory.all
+    begin
+      @scroll_histories = ScrollHistory.all
+    rescue Exception => e
+      @scroll_histories = []
+      puts "scroll history exception: #{e.inspect}"
+    end
   end
 
   def test_request(params={})

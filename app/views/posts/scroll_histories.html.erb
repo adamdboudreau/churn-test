@@ -1,5 +1,9 @@
+<% begin %>
+  <div class="title"><%= ScrollHistory.new.attributes.keys.join(',') %></div>
+  <% @scroll_histories.each do |h| %>
+    <div class="row"><%= h.attributes.values.inspect %></div>
+  <% end %>
 
-<div class="title"><%= ScrollHistory.new.attributes.keys.join(',') %></div>
-<% @scroll_histories.each do |h| %>
-  <div class="row"><%= h.attributes.values.inspect %></div>
+<% rescue Exception => e %>
+  Exception: <%= e.inspect %>
 <% end %>
