@@ -127,8 +127,8 @@ var checkScrollSpeed = (function(settings){
 
 // listen to "scroll" event
 window.onscroll = function(){
-    var scrollSpeed = checkScrollSpeed();
-    if (scrollSpeed < -220 || scrollSpeed > 220){
+    var scrollSpeed = checkScrollSpeed(), scrollSpeedLimit = 100;
+    if (scrollSpeed < -scrollSpeedLimit || scrollSpeed > scrollSpeedLimit){
 
         console.log("Check out this related content (ScrollVelocity: "+scrollSpeed+")");
         openChurnBox();
