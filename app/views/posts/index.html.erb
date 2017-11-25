@@ -29,11 +29,17 @@
 <%= link_to 'New Post', new_post_path %>
 
 <br>
+<div style="display:none;">
+  <%= link_to 'Test', test_request_path %><br/>
+  <div class="tester">tester<br/>test</div><br/>
+</div>
 
-<%= link_to 'Test', test_request_path %><br/>
-<%= link_to 'Get Churn', get_churn_path(scrollspeed: 180, towardsaddressbar: 0) %><br/>
-<div class="tester">tester<br/>test</div><br/>
-<div class="getchurn">getchurn</div><br/>
+<div><%= link_to 'Test churn api', get_churn_path(scrollspeed: 180, towardsaddressbar: 0) %></div><br/>
+
+<div class="getchurn">silent test churn api</div><br/>
+
+<%= javascript_include_tag 'testscript.js' %>
+
 <script>
   $('.getchurn').on('click', function () {
     console.log('get churn');

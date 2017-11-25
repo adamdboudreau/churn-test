@@ -136,3 +136,21 @@ window.onscroll = function(){
     }
 };
 
+//function httpGetAsync(theUrl, callback)
+//{
+//    var xmlHttp = new XMLHttpRequest();
+//    xmlHttp.onreadystatechange = function() {
+//        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+//            callback(xmlHttp.responseText);
+//    }
+//    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+//    xmlHttp.setRequestHeader('Access-Control-Allow-Origin', '*');xmlHttp.setRequestHeader('Access-Control-Allow-Methods', 'POST, GET');xmlHttp.setRequestHeader('Access-Control-Max-Age', 1000);xmlHttp.setRequestHeader('Access-Control-Allow-Headers', 'origin, x-csrftoken, content-type, accept');
+//    xmlHttp.send(null);
+//}
+//
+//console.log('try to get a request...');
+//
+//var getChurnUrl = "https://ml-churn-test.herokuapp.com/get_churn?scrollspeed=180&amp;towardsaddressbar=0";
+//
+//httpGetAsync(getChurnUrl, function (data) { console.log('success'); console.log(data); });
+//xhr.setRequestHeader('Authorization', token);
