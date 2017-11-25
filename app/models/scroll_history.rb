@@ -1,0 +1,3 @@
+class ScrollHistory < ApplicationRecord
+
+end

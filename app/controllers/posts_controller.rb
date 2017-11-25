@@ -130,6 +130,18 @@ class PostsController < ApplicationController
     }
   end
 
+  def get_scroll_history
+    # "scroll_speed", "towards_address_bar", "churn", "sid"
+    puts "get scroll history: #{scroll_history_params.inspect}"
+    sh = ScrollHistory.create(scroll_history_params)
+
+    render json: sh.attributes.to_json
+  end
+
+  def scroll_histories
+    @scroll_histories = ScrollHistory.all
+  end
+
   def test_request(params={})
     require 'net/http'
 
@@ -326,4 +338,8 @@ class PostsController < ApplicationController
     def churn_params
       params.permit(:scrollspeed, :towardsaddressbar)
     end
+
+  def scroll_history_params
+    params.permit(["scroll_speed", "towards_address_bar", "churn", "sid"].map(&:to_sym))
+  end
 end

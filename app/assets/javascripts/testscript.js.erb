@@ -62,7 +62,23 @@ injectHTML += '</div>';
 // document.getElementById("infiniteScrollStream").innerHTML += injectHTML;
 
 // Elsewhere
-document.getElementsByTagName("body")[0].innerHTML += injectHTML;
+if (document.getElementsByTagName("body") != undefined && document.getElementsByTagName("body")[0] != undefined) {
+  console.log('set body ');
+  document.getElementsByTagName("body")[0].innerHTML += injectHTML;
+} else {
+  console.log(' body  dne');
+  setTimeout(100, function () {
+    if (document.getElementsByTagName("body") != undefined && document.getElementsByTagName("body")[0] != undefined) {
+      console.log('set body');
+      document.getElementsByTagName("body")[0].innerHTML += injectHTML;
+    }
+  });
+}
+$.ready(function () {
+  console.log('set body on page load');
+  document.getElementsByTagName("body")[0].innerHTML += injectHTML;
+});
+
 
 
 function openChurnBox(){
@@ -115,6 +131,27 @@ function getPredictedChurn(scrollspeed, towardsaddressbar) {
   });
 }
 
+function recordScrollHistory(scrollspeed, towardsaddressbar) {
+  // # "scroll_speed", "towards_address_bar", "churn", "sid"
+  console.log('recordScrollHistory' + scrollspeed + ',' + towardsaddressbar);
+  var sid = document.getElementById('sid'),
+      url = '/get_scroll_history?scroll_speed=' + scrollspeed + '&towards_address_bar=' + towardsaddressbar + '&churn=0' + '&sid=' + sid;
+  if (sid == undefined) {
+    url = url + '&sid=';
+  } else {
+    url = url + '&sid=' + sid.innerHTML;
+  }
+
+  $.get({
+    url: url,
+    data: {},
+    success: function (data) {
+      console.log('recordScrollHistory success');
+      console.log(data);
+    }
+  });
+}
+
 // Detects URL bar movement on desktop
 
 var mouseY = 0;
@@ -123,6 +160,7 @@ window.addEventListener("mouseout",function(e){
         mouseY = e.clientY;
         if(mouseY<topValue) {
             // alert("Check out this related content (URL)");
+          recordScrollHistory(checkScrollSpeed(), 1);
           getPredictedChurn(checkScrollSpeed(), 1);
 //            openChurnBox();
         }
@@ -162,6 +200,7 @@ var checkScrollSpeed = (function(settings){
 window.onscroll = function(){
     var scrollSpeed = checkScrollSpeed(), scrollSpeedLimit = 10;
     if (scrollSpeed < -scrollSpeedLimit || scrollSpeed > scrollSpeedLimit){
+      recordScrollHistory(scrollSpeed, 0);
       getPredictedChurn(scrollSpeed, 0);
 //        console.log("churn Check out this related content (ScrollVelocity: "+scrollSpeed+")");
 //        openChurnBox();
