@@ -130,10 +130,11 @@ class PostsController < ApplicationController
     }
   end
 
+  # note actually saves scroll history record
   def get_scroll_history
     # "scroll_speed", "towards_address_bar", "churn", "sid"
     begin
-      if ScrollHistory.count > 3000
+      if %w(1 true).include?(ENV['disable_scroll_history_saving'].to_s)
         render json: {error: 'too much data to record'}
       else
         puts "get scroll history: #{scroll_history_params.inspect}"
