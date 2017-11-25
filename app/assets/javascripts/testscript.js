@@ -42,8 +42,8 @@ var injectHTML = "";
 // Today's Parent Colour
 // injectHTML += '<div class="churn-box" id="churnBox" style="display:none; margin: 0 auto 0 auto; position: fixed; width: 100%; height: 200px; text-align: center; top: 0px; z-index: 10000000; background-color: #00AAB5; padding: 5px; color: #FFFFFF; font-weight: bold;">';
 // Other Colour
-injectHTML += '<div class="churn-box" id="churnBox" style="display:none; margin: 0 auto 0 auto; position: fixed; width: 100%; height: '+churnBoxHeight+'px; text-align: center; top: 0px; z-index: 10000000; background-color: #'+churnBoxColour+'; padding: 5px; color: #FFFFFF; font-weight: bold;">';
-injectHTML += '<div class="churn-x" style="float: right; font: Helvetica; font-size: 20px; margin-top: 10px; margin-right: 10px; cursor: pointer;" onclick="closeChurnBox();">X</div><br clear="all" />';
+injectHTML += '<div class="churn-box" id="churnBox" style="display:none; margin: 0 auto 0 auto; position: fixed; width: 100%; height: '+churnBoxHeight+'px; text-align: center; top: 0px;left:0px; z-index: 10000000; background-color: #'+churnBoxColour+'; padding: 5px; color: #FFFFFF; font-weight: bold;">';
+injectHTML += '<div class="churn-x" style="float: right; font: helvetica; font-size: 20px; position:fixed;top:15px;right:15px; cursor: pointer;" onclick="closeChurnBox();">X</div><br clear="all" />';
 injectHTML += '<div class="churn-items" style="margin: auto; text-align: center; display: inline-block;">';
 for(var i=0;i<churnItemsLimit;i++){
     injectHTML += '<div class="churn-item" style="display: inline-block; float: left; padding: 5px;">';
