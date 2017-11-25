@@ -280,7 +280,12 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    begin
+      @posts = Post.all
+    rescue Exception => e
+      @posts = []
+      puts "exception pulling posts: #{e.inspect}"
+    end
   end
 
   # GET /posts/1
