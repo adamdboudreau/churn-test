@@ -148,6 +148,71 @@ class PostsController < ApplicationController
     end
   end
 
+  def test_content_api
+
+  end
+
+  # note actually saves scroll history record
+  def test_content_api_call
+    path = "workspaces/dbbfd492f47242058f1db7c3a877e75f/services/e812851fded941ec9540738c7901f912/execute?api-version=2.0&details=true"
+    url = "https://ussouthcentral.services.azureml.net"
+    token = "FaHooKwT2N9S14UXfdzgcyZhNybYohkvAKM3toOo6hv30TJV4vAuIb6z0gCBJ8IIzOSMRYTbv4M4vw4x0Jka/A=="
+
+    content_p = get_content_api_params(content_api_params)
+
+    puts "content_api params: #{content_api_params.inspect}"
+
+    conn = Faraday.new(url, ssl: {verify: false}) do |conn|
+      conn.use FaradayMiddleware::FollowRedirects, cookies: :all
+      conn.request :url_encoded
+      conn.adapter :net_http
+    end
+
+    response = conn.send(:post, path) do |req|
+      req.headers["Authorization"] ="Bearer #{token}" unless token.blank?
+      req.headers["Content-Type"] ="application/json"
+
+      req.params = content_p
+      req.body = content_p.to_json
+    end
+
+    puts "\nresponse: #{response.inspect}\n"
+    api_response_json = JSON.parse(response.body) rescue { response_status: response.status }
+    scored_content = ""
+    if api_response_json['Results']
+      scored_content = api_response_json['Results']['output1']['value']['Values'][-1][-1]
+    end
+
+    render json: {content: scored_content}.merge(api_response_json)
+  end
+
+  def get_content_api_params(p={})
+    {
+      'api-version'=>2.0,'details'=>true,
+      "Inputs"=> {
+        "input1"=> {
+          "ColumnNames"=> [
+            "GeoSegmentation Cities",
+            "Section (evar6)",
+            "Content Name (evar10)",
+            "Page URL (evar13)",
+            "Page Views"
+          ],
+          "Values"=> [
+            [
+                p[:city],
+                p[:section],
+                p[:content],
+                p[:page_url],
+                p[:page_views].to_i
+            ]
+          ]
+        }
+      },
+      "GlobalParameters"=> {}
+    }
+  end
+
   def scroll_histories
     begin
       @scroll_histories = ScrollHistory.all
@@ -361,5 +426,9 @@ class PostsController < ApplicationController
 
   def scroll_history_params
     params.permit(["scroll_speed", "towards_address_bar", "churn", "sid"].map(&:to_sym))
+  end
+
+  def content_api_params
+    params.permit(:city, :section,:content,:page_url,:page_views)
   end
 end

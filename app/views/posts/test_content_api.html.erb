@@ -1,0 +1,23 @@
+
+<div>test_content_api </div>
+
+<%= form_tag test_content_api_call_path, method: :post do %>
+  <br/>
+  <%= label_tag 'page_views', 'View count' %>
+  <%= text_field_tag 'page_views', '0' %>
+  <br/>
+  <%= label_tag 'city', 'City' %>
+  <%= text_field_tag 'city', 'winnipeg' %>
+  <br/>
+  <%= label_tag 'page_url', 'Url' %>
+  <%= text_field_tag 'page_url', 'Unknown' %>
+  <br/>
+  <%= label_tag 'content', 'Content' %>
+  <%= text_field_tag 'content', 'Unknown' %>
+  <br/>
+  <%= label_tag 'section', 'Section' %>
+  <%= text_field_tag 'section', 'todaysparent : recipe' %>
+  <br/><br/>
+
+  <%= submit_tag 'submit' %>
+<% end %>
