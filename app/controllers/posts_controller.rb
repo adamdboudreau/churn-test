@@ -16,13 +16,9 @@ class PostsController < ApplicationController
 
   def test_req(params={})
     puts 'test req'
-
-    # path = 'workspaces/dbbfd492f47242058f1db7c3a877e75f/services/864422834fa443508e23c901eb151054/execute?api-version=2.0&details=true'
-    # url = "https://ussouthcentral.services.azureml.net"
-    # token = "0HmoDLk7iHc/KY88+PJsCw3SWT4UBbPvJk0dkllAlNhFGVGDm+v2tn/SF4QFHDOlEr2BaOXmOpy13rQFz07Fng=="
-    path = "workspaces/dbbfd492f47242058f1db7c3a877e75f/services/2be44fe3833346d687602bf35ace4f4a/execute?api-version=2.0&details=true"
+    path = ENV['earlier_churn_api_path']
     url = "https://ussouthcentral.services.azureml.net"
-    token = "dyvc/hRs3H2Vgg/mhE3G8ZqenCpStb0Kq3dZKh8GAp2LR3ciNcpNhIeF8vt+O3xqTtuCS5P1PAoS3vtl5ds7WA=="
+    token = ENV['earlier_churn_api_token']
 
     conn = Faraday.new(url, ssl: {verify: false}) do |conn|
       conn.use FaradayMiddleware::FollowRedirects, cookies: :all
@@ -48,7 +44,6 @@ class PostsController < ApplicationController
   end
 
   def sampler
-    token = "dyvc/hRs3H2Vgg/mhE3G8ZqenCpStb0Kq3dZKh8GAp2LR3ciNcpNhIeF8vt+O3xqTtuCS5P1PAoS3vtl5ds7WA=="
     {
       # 'access'=> token,
       # 'headers'=> {'Authorization:Bearer'=> token, 'Authorization'=> token, 'Content-Type'=> 'application/json'},
@@ -80,9 +75,9 @@ class PostsController < ApplicationController
 
   def get_churn
     # scrollspeed: 180, towardsaddressbar: 0
-    path = "workspaces/dbbfd492f47242058f1db7c3a877e75f/services/2be44fe3833346d687602bf35ace4f4a/execute?api-version=2.0&details=true"
+    path = ENV['churn_api_path']
     url = "https://ussouthcentral.services.azureml.net"
-    token = "dyvc/hRs3H2Vgg/mhE3G8ZqenCpStb0Kq3dZKh8GAp2LR3ciNcpNhIeF8vt+O3xqTtuCS5P1PAoS3vtl5ds7WA=="
+    token = ENV['churn_api_token']
 
     churn_p = get_churn_params(churn_params)
 
@@ -154,9 +149,9 @@ class PostsController < ApplicationController
 
   # note actually saves scroll history record
   def test_content_api_call
-    path = "workspaces/dbbfd492f47242058f1db7c3a877e75f/services/e812851fded941ec9540738c7901f912/execute?api-version=2.0&details=true"
+    path = ENV['content_api_path']
     url = "https://ussouthcentral.services.azureml.net"
-    token = "FaHooKwT2N9S14UXfdzgcyZhNybYohkvAKM3toOo6hv30TJV4vAuIb6z0gCBJ8IIzOSMRYTbv4M4vw4x0Jka/A=="
+    token = ENV['content_api_token']
 
     content_p = get_content_api_params(content_api_params)
 
@@ -222,126 +217,6 @@ class PostsController < ApplicationController
     end
   end
 
-  def test_request(params={})
-    require 'net/http'
-
-    # furl = "http://localhost:3000/posts" # "http://www.google.com"
-    # url = URI.parse(furl)
-    # # req = Net::HTTP::Post.new(url.to_s, {authenticity_token: form_authenticity_token, post: 'asdf'})
-    # req = Net::HTTP::Get.new(url.to_s)
-    # res = Net::HTTP.start(url.host, url.port) {|http|
-    #   http.request(req)
-    # }
-    #
-    # puts res.body
-
-    furl = "https://ussouthcentral.services.azureml.net/workspaces/dbbfd492f47242058f1db7c3a877e75f/services/864422834fa443508e23c901eb151054/execute?api-version=2.0&details=true"
-    req = Net::HTTP.post URI(furl),
-                         sample_params.to_json,
-                   # { authenticity_token: form_authenticity_token, "q" => "ruby", "max" => "50", post: { content: 'asdf' } }.to_json,
-                   #       "Authorization:Bearer" => "0HmoDLk7iHc/KY88+PJsCw3SWT4UBbPvJk0dkllAlNhFGVGDm+v2tn/SF4QFHDOlEr2BaOXmOpy13rQFz07Fng==",
-                   #       "Authorization" => "0HmoDLk7iHc/KY88+PJsCw3SWT4UBbPvJk0dkllAlNhFGVGDm+v2tn/SF4QFHDOlEr2BaOXmOpy13rQFz07Fng==",
-                         "Authorization" => "Bearer: 0HmoDLk7iHc/KY88+PJsCw3SWT4UBbPvJk0dkllAlNhFGVGDm+v2tn/SF4QFHDOlEr2BaOXmOpy13rQFz07Fng==",
-                   "Content-Type" => "application/json"
-
-    puts "\n\n req: #{req.inspect}"
-  end
-
-  def sample_params
-    {
-        "Inputs"=> {
-        "input1"=> {
-        "ColumnNames"=> [
-        "symboling",
-        "normalized-losses",
-        "make-id",
-        "fuel-type",
-        "aspiration",
-        "num-of-doors",
-        "body-style",
-        "drive-wheels",
-        "engine-location",
-        "wheel-base",
-        "length",
-        "width",
-        "height",
-        "curb-weight",
-        "engine-type",
-        "num-of-cylinders",
-        "engine-size",
-        "fuel-system",
-        "bore",
-        "stroke",
-        "compression-ratio",
-        "horsepower",
-        "peak-rpm",
-        "city-mpg",
-        "highway-mpg",
-        "price"
-    ],
-        "Values"=> [
-        [
-            "0",
-            "0",
-            "0",
-            "value",
-            "value",
-            "value",
-            "value",
-            "value",
-            "value",
-            "0",
-            "0",
-            "0",
-            "0",
-            "0",
-            "value",
-            "value",
-            "0",
-            "value",
-            "0",
-            "0",
-            "0",
-            "0",
-            "0",
-            "0",
-            "0",
-            "0"
-        ],
-        [
-            "0",
-            "0",
-            "0",
-            "value",
-            "value",
-            "value",
-            "value",
-            "value",
-            "value",
-            "0",
-            "0",
-            "0",
-            "0",
-            "0",
-            "value",
-            "value",
-            "0",
-            "value",
-            "0",
-            "0",
-            "0",
-            "0",
-            "0",
-            "0",
-            "0",
-            "0"
-        ]
-    ]
-    }
-    },
-        "GlobalParameters"=> {}
-    }
-  end
 
   # GET /posts
   # GET /posts.json
